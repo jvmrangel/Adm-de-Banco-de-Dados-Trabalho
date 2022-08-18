@@ -1,7 +1,7 @@
 
 # Consultas:
 
-## 1ª Query
+## 1ª Query (TPC-H Q12)
 
 ```sql
  
@@ -48,7 +48,7 @@ PostgreSQL: 0.264 - 0.262 - 0.270 - 0.268 - 0.260 = Média: 0.265 sec
 
 MySQL: 0.203 - 0.141 - 0.180 - 0.109 - 0.162 = Média: 0.159 sec
 
-## 2ª Query
+## 2ª Query (TPC-H Q3)
 
 ```sql
 SELECT l_orderkey,
@@ -90,7 +90,7 @@ PostgreSQL: 0.235 - 0.242 - 0.243 - 0.238 - 0.252 = Média: 0.242 sec
 
 MySQL: 0.204 - 0.187 - 0.190 - 0.195 - 0.182 = Média: 0.191 sec
 
-## 3ª Query
+## 3ª Query (TPC-H Q19)
 
 ```sql
 SELECT Sum(l_extendedprice * ( 1 - l_discount )) AS revenue
@@ -130,7 +130,7 @@ MySQL: 0.172 - 0.156 - 0.156 - 0.156 - 0.156 = Média: 0.159 sec
 
 ![1](https://media.discordapp.net/attachments/441059716185980929/1009676154585743490/unknown.png)
 
-## 4ª Query
+## 4ª Query (TPC-H Q8)
 
 ```sql
 SELECT o_year,
@@ -170,7 +170,7 @@ MySQL: 0.656 - 0.641 - 0.328 - 0.312 - 0.328 = Média: 0.453 sec
 
 ![1](https://media.discordapp.net/attachments/744351225381781594/1009677155711594556/unknown.png?width=1440&height=415)
 
-## 5ª Query
+## 5ª Query (TPC-H Q10)
 
 ```sql
 SELECT c_custkey,
