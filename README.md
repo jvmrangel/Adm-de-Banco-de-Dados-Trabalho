@@ -182,11 +182,11 @@ MySQL: 0.656 - 0.641 - 0.328 - 0.312 - 0.328 = Média: 0.453 sec
 
 ![1](https://media.discordapp.net/attachments/744351225381781594/1009677155711594556/unknown.png?width=1440&height=415)
 
-Evitando o full table scan em Orders, utilizamos a criação do index `CREATE INDEX O_ORDERDATE_CUSTKEY_Index ON orders (O_ORDERDATE, O_CUSTKEY)` e do `CREATE INDEX R_NAME_index on region (R_NAME)` no MySQL.
+Evitando o full table scan em Orders, utilizamos a criação do index `CREATE INDEX O_CUSTKEY_ORDERDATE_Index ON orders (O_CUSTKEY, O_ORDERDATE)` e do `CREATE INDEX R_NAME_index on region (R_NAME)` no MySQL.
 
 O mesmo método não funcionou no postgreSQL, o mesmo não utilizou os index criados.
 
-![1](https://media.discordapp.net/attachments/815287365747736630/1009940208273330176/unknown.png?width=1440&height=358)
+![1](https://media.discordapp.net/attachments/815287365747736630/1009962989497090128/unknown.png?width=1440&height=316)
 
 ### Média do tempo da consulta otimizada
 
