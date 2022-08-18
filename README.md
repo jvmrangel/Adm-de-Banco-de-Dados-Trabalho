@@ -170,6 +170,18 @@ MySQL: 0.656 - 0.641 - 0.328 - 0.312 - 0.328 = Média: 0.453 sec
 
 ![1](https://media.discordapp.net/attachments/744351225381781594/1009677155711594556/unknown.png?width=1440&height=415)
 
+Evitando o full table scan em Orders, utilizamos a criação do index `CREATE INDEX O_ORDERDATE_CUSTKEY_Index ON orders (O_ORDERDATE, O_CUSTKEY)` e do `CREATE INDEX R_NAME_index on region (R_NAME)` no MySQL.
+
+O mesmo método não funcionou no postgreSQL, o mesmo não utilizou os index criados.
+
+![1](https://media.discordapp.net/attachments/815287365747736630/1009940208273330176/unknown.png?width=1440&height=358)
+
+### Média do tempo da consulta otimizada
+
+PostgreSQL: (Otimização não aplicada)
+
+MySQL: 0.235 - 0.250 - 0.262 - 0.243 - 0.252 = Média: 0.248 sec
+
 ## 5ª Query (TPC-H Q10)
 
 ```sql
@@ -213,10 +225,12 @@ Evitando o full table scan em Orders, utilizamos a criação do index `CREATE IN
 
 Essa mesma medida não teve eficácia no PostegreSQL, pois o index criado acabou não sendo utilizado
 
+![1](https://media.discordapp.net/attachments/744351225381781594/1009701802276560926/unknown.png)
+
 ### Média do tempo da consulta otimizada
 
 PostgreSQL: (Otimização não aplicada)
 
-MySQL: 0.328 - 0.326 - 0.326 - 0.324 - 0.328 = Média: 0.326 sec
+MySQL: 0.157 - 0.182 - 0.164 - 0.153 - 0.162 = Média: 0.164 sec
 
-![1](https://media.discordapp.net/attachments/744351225381781594/1009701802276560926/unknown.png)
+
