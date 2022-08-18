@@ -1,2 +1,196 @@
-# Adm-de-Banco-de-Dados-Trabalho
-Trabalho de Administração de Banco de Dados
+
+# Consultas:
+
+## 1ª Query
+
+```sql
+ 
+SELECT l_shipmode,
+       SUM(CASE
+             WHEN o_orderpriority = '1-URGENT'
+                   OR o_orderpriority = '2-HIGH' THEN 1
+             ELSE 0
+           END) AS high_line_count,
+       SUM(CASE
+             WHEN o_orderpriority <> '1-URGENT'
+                  AND o_orderpriority <> '2-HIGH' THEN 1
+             ELSE 0
+           END) AS low_line_count
+FROM   orders,
+       lineitem
+WHERE  o_orderkey = l_orderkey
+       AND l_shipmode IN ( 'MAIL', 'SHIP' )
+       AND l_commitdate < l_receiptdate
+       AND l_shipdate < l_commitdate
+       AND l_receiptdate >= DATE '1994-01-01'
+       AND l_receiptdate < DATE '1994-01-01' + interval '1' year
+GROUP  BY l_shipmode
+ORDER  BY l_shipmode; 
+```
+
+### Média do tempo da consulta não otimizada
+
+PostgreSQL: 0.320 - 0.330 - 0.315 - 0.437 - 0.310 = Média: 0.342
+
+MySQL: 0.437 - 0.406 - 0.375 - 0.375 - 0.375 = Média: 0.393
+
+![1](https://media.discordapp.net/attachments/441059716185980929/1009675074179170364/unknown.png)
+
+## 2ª Query
+
+```sql
+SELECT l_orderkey,
+       SUM(l_extendedprice * ( 1 - l_discount )) AS revenue,
+       o_orderdate,
+       o_shippriority
+FROM   customer,
+       orders,
+       lineitem
+WHERE  c_mktsegment = 'BUILDING'
+       AND c_custkey = o_custkey
+       AND l_orderkey = o_orderkey
+       AND o_orderdate < DATE '1995-03-15'
+       AND l_shipdate > DATE '1995-03-15'
+GROUP  BY l_orderkey,
+          o_orderdate,
+          o_shippriority
+ORDER  BY revenue DESC,
+          o_orderdate; 
+```
+
+### Média do tempo da consulta não otimizada
+
+PostgreSQL: 0.256 - 0.243 - 0.225 - 0.229 - 0.240 = Média: 0.238
+
+MySQL: 0.468 - 0.453 - 0.407 - 0.391 - 0.442 = Média: 0.432
+
+![1](https://media.discordapp.net/attachments/744351225381781594/1009676819366154313/unknown.png)
+
+## 3ª Query
+
+```sql
+SELECT Sum(l_extendedprice * ( 1 - l_discount )) AS revenue
+FROM   lineitem,
+       part
+WHERE  ( p_partkey = l_partkey
+         AND p_brand = 'Brand#12'
+         AND p_container IN ( 'SM CASE', 'SM BOX', 'SM PACK', 'SM PKG' )
+         AND l_quantity >= 1
+         AND l_quantity <= 1 + 10
+         AND p_size BETWEEN 1 AND 5
+         AND l_shipmode IN ( 'AIR', 'AIR REG' )
+         AND l_shipinstruct = 'DELIVER IN PERSON' )
+        OR ( p_partkey = l_partkey
+             AND p_brand = 'Brand#23'
+             AND p_container IN ( 'MED BAG', 'MED BOX', 'MED PKG', 'MED PACK' )
+             AND l_quantity >= 10
+             AND l_quantity <= 10 + 10
+             AND p_size BETWEEN 1 AND 10
+             AND l_shipmode IN ( 'AIR', 'AIR REG' )
+             AND l_shipinstruct = 'DELIVER IN PERSON' )
+        OR ( p_partkey = l_partkey
+             AND p_brand = 'Brand#34'
+             AND p_container IN ( 'LG CASE', 'LG BOX', 'LG PACK', 'LG PKG' )
+             AND l_quantity >= 20
+             AND l_quantity <= 20 + 10
+             AND p_size BETWEEN 1 AND 15
+             AND l_shipmode IN ( 'AIR', 'AIR REG' )
+             AND l_shipinstruct = 'DELIVER IN PERSON' ); 
+```
+
+### Média do tempo da consulta não otimizada
+
+PostgreSQL: 0.186 - 0.157 - 0.156 - 0.197 - 0.167 = Média: 0.172
+
+MySQL: 0.172 - 0.156 - 0.156 - 0.156 - 0.156 = Média: 0.159
+
+![1](https://media.discordapp.net/attachments/441059716185980929/1009676154585743490/unknown.png)
+
+## 4ª Query
+
+```sql
+SELECT o_year,
+       SUM(CASE
+             WHEN nation = 'BRAZIL' THEN volume
+             ELSE 0
+           END) / SUM(volume) AS mkt_share
+FROM   (SELECT Extract(year FROM o_orderdate)       AS o_year,
+               l_extendedprice * ( 1 - l_discount ) AS volume,
+               n2.n_name                            AS nation
+        FROM   part,
+               supplier,
+               lineitem,
+               orders,
+               customer,
+               nation n1,
+               nation n2,
+               region
+        WHERE  p_partkey = l_partkey
+               AND s_suppkey = l_suppkey
+               AND l_orderkey = o_orderkey
+               AND o_custkey = c_custkey
+               AND c_nationkey = n1.n_nationkey
+               AND n1.n_regionkey = r_regionkey
+               AND r_name = 'AMERICA'
+               AND s_nationkey = n2.n_nationkey
+               AND o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31'
+               AND p_type = 'ECONOMY ANODIZED STEEL') AS all_nations
+GROUP  BY o_year
+ORDER  BY o_year;
+```
+### Média do tempo da consulta não otimizada
+
+PostgreSQL: 0.263 - 0.164 - 0.155 - 0.168 - 0.160 = Média: 0.182
+
+MySQL: 0.656 - 0.641 - 0.328 - 0.312 - 0.328 = Média: 0.453
+
+![1](https://media.discordapp.net/attachments/744351225381781594/1009677155711594556/unknown.png?width=1440&height=415)
+
+## 5ª Query
+
+```sql
+SELECT c_custkey,
+       c_name,
+       SUM(l_extendedprice * ( 1 - l_discount )) AS revenue,
+       c_acctbal,
+       n_name,
+       c_address,
+       c_phone,
+       c_comment
+FROM   customer,
+       orders,
+       lineitem,
+       nation
+WHERE  c_custkey = o_custkey
+       AND l_orderkey = o_orderkey
+       AND o_orderdate >= DATE '1993-10-01'
+       AND o_orderdate < DATE ' 1993-10-01' + interval '3' month
+       AND l_returnflag = 'R'
+       AND c_nationkey = n_nationkey
+GROUP  BY c_custkey,
+          c_name,
+          c_acctbal,
+          c_phone,
+          n_name,
+          c_address,
+          c_comment
+ORDER  BY revenue DESC; 
+```
+
+### Média do tempo da consulta não otimizada
+
+PostgreSQL: 0.380 - 0.357 - 0.370 - 0.333 - 0.338 = Média: 0.395
+
+MySQL: 0.406 - 0.359 - 0.343 - 0.359 - 0.343 = Média: 0.362
+
+![1](https://media.discordapp.net/attachments/744351225381781594/1009678791796346920/unknown.png)
+
+Utilizando a criação do index `CREATE INDEX O_ORDERDATE_Index ON orders (O_ORDERDATE)`
+
+### Média do tempo da consulta otimizada
+
+PostgreSQL: 
+
+MySQL: 0.328 - 0.326 - 0.326 - 0.324 - 0.328 = Média: 0.326
+
+![1](https://media.discordapp.net/attachments/744351225381781594/1009701802276560926/unknown.png)
