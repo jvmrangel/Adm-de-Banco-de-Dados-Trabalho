@@ -130,6 +130,18 @@ MySQL: 0.172 - 0.156 - 0.156 - 0.156 - 0.156 = Média: 0.159 sec
 
 ![1](https://media.discordapp.net/attachments/441059716185980929/1009676154585743490/unknown.png)
 
+Evitando o full table scan em Part, utilizamos a criação do index `CREATE INDEX P_BRAND_CONTAINER_SIZE_Index ON part (P_BRAND, P_CONTAINER, P_SIZE)` no MySQL.
+
+O mesmo método funcionou no PostgreSQL, porém não obteve uma melhora tão significativa quanto no MySQL.
+
+![1](https://media.discordapp.net/attachments/815287365747736630/1009949750184919142/unknown.png)
+
+### Média do tempo da consulta otimizada
+
+PostgreSQL: 0.142 - 0.148 - 0.152 - 0.144 - 0.142 = Média: 146 sec
+
+MySQL: 0.062 - 0.080 - 0.068 - 0.076 - 0.072 = Média: 0.071 sec
+
 ## 4ª Query (TPC-H Q8)
 
 ```sql
