@@ -30,9 +30,9 @@ ORDER  BY l_shipmode;
 
 ### Média do tempo da consulta não otimizada
 
-PostgreSQL: 0.320 - 0.330 - 0.315 - 0.437 - 0.310 = Média: 0.342
+PostgreSQL: 0.320 - 0.330 - 0.315 - 0.437 - 0.310 = Média: 0.342 sec
 
-MySQL: 0.437 - 0.406 - 0.375 - 0.375 - 0.375 = Média: 0.393
+MySQL: 0.437 - 0.406 - 0.375 - 0.375 - 0.375 = Média: 0.393 sec
 
 ![1](https://media.discordapp.net/attachments/441059716185980929/1009675074179170364/unknown.png)
 
@@ -60,11 +60,23 @@ ORDER  BY revenue DESC,
 
 ### Média do tempo da consulta não otimizada
 
-PostgreSQL: 0.256 - 0.243 - 0.225 - 0.229 - 0.240 = Média: 0.238
+PostgreSQL: 0.256 - 0.243 - 0.225 - 0.229 - 0.240 = Média: 0.238 sec
 
-MySQL: 0.468 - 0.453 - 0.407 - 0.391 - 0.442 = Média: 0.432
+MySQL: 0.468 - 0.453 - 0.407 - 0.391 - 0.442 = Média: 0.432 sec
 
 ![1](https://media.discordapp.net/attachments/744351225381781594/1009676819366154313/unknown.png)
+
+Evitando o full table scan em customer, utilizamos a criação do index `CREATE INDEX C_MKTSEGMENT_Index ON customer (c_mktsegment)` no MySQL
+
+O mesmo método funcionou no PostgreSQL, porém não teve uma grande diferença de desempenho como teve no MySQL. No postgreSQL, a etapa que mais demora é a comparação do o_orderdate, que mesmo criando um index para o mesmo, o postgre nao o utiliza durante sua execução.
+
+![1](https://media.discordapp.net/attachments/744351225381781594/1009827972666101801/unknown.png)
+
+### Média do tempo da consulta otimizada
+
+PostgreSQL: 0.235 - 0.242 - 0.243 - 0.238 - 0.252 = Média: 0.242 sec
+
+MySQL: 0.204 - 0.187 - 0.190 - 0.195 - 0.182 = Média: 0.191 sec
 
 ## 3ª Query
 
@@ -100,9 +112,9 @@ WHERE  ( p_partkey = l_partkey
 
 ### Média do tempo da consulta não otimizada
 
-PostgreSQL: 0.186 - 0.157 - 0.156 - 0.197 - 0.167 = Média: 0.172
+PostgreSQL: 0.186 - 0.157 - 0.156 - 0.197 - 0.167 = Média: 0.172 sec
 
-MySQL: 0.172 - 0.156 - 0.156 - 0.156 - 0.156 = Média: 0.159
+MySQL: 0.172 - 0.156 - 0.156 - 0.156 - 0.156 = Média: 0.159 sec
 
 ![1](https://media.discordapp.net/attachments/441059716185980929/1009676154585743490/unknown.png)
 
@@ -140,9 +152,9 @@ ORDER  BY o_year;
 ```
 ### Média do tempo da consulta não otimizada
 
-PostgreSQL: 0.263 - 0.164 - 0.155 - 0.168 - 0.160 = Média: 0.182
+PostgreSQL: 0.263 - 0.164 - 0.155 - 0.168 - 0.160 = Média: 0.182 sec
 
-MySQL: 0.656 - 0.641 - 0.328 - 0.312 - 0.328 = Média: 0.453
+MySQL: 0.656 - 0.641 - 0.328 - 0.312 - 0.328 = Média: 0.453 sec
 
 ![1](https://media.discordapp.net/attachments/744351225381781594/1009677155711594556/unknown.png?width=1440&height=415)
 
@@ -179,18 +191,20 @@ ORDER  BY revenue DESC;
 
 ### Média do tempo da consulta não otimizada
 
-PostgreSQL: 0.380 - 0.357 - 0.370 - 0.333 - 0.338 = Média: 0.395
+PostgreSQL: 0.380 - 0.357 - 0.370 - 0.333 - 0.338 = Média: 0.395 sec
 
-MySQL: 0.406 - 0.359 - 0.343 - 0.359 - 0.343 = Média: 0.362
+MySQL: 0.406 - 0.359 - 0.343 - 0.359 - 0.343 = Média: 0.362 sec
 
 ![1](https://media.discordapp.net/attachments/744351225381781594/1009678791796346920/unknown.png)
 
-Utilizando a criação do index `CREATE INDEX O_ORDERDATE_Index ON orders (O_ORDERDATE)`
+Evitando o full table scan em Orders, utilizamos a criação do index `CREATE INDEX O_ORDERDATE_Index ON orders (O_ORDERDATE)` no MySQL
+
+Essa mesma medida não teve eficácia no PostegreSQL, pois o index criado acabou não sendo utilizado
 
 ### Média do tempo da consulta otimizada
 
-PostgreSQL: 
+PostgreSQL: (Otimização não aplicada)
 
-MySQL: 0.328 - 0.326 - 0.326 - 0.324 - 0.328 = Média: 0.326
+MySQL: 0.328 - 0.326 - 0.326 - 0.324 - 0.328 = Média: 0.326 sec
 
 ![1](https://media.discordapp.net/attachments/744351225381781594/1009701802276560926/unknown.png)
