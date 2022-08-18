@@ -32,9 +32,21 @@ ORDER  BY l_shipmode;
 
 PostgreSQL: 0.320 - 0.330 - 0.315 - 0.437 - 0.310 = Média: 0.342 sec
 
-MySQL: 0.437 - 0.406 - 0.375 - 0.375 - 0.375 = Média: 0.393 sec
+MySQL: 0.297 - 0.282 - 0.298 - 0.285 - 0.282 = Média: 0.289 sec
 
 ![1](https://media.discordapp.net/attachments/441059716185980929/1009675074179170364/unknown.png)
+
+Evitando o full table scan em lineitem, utilizamos a criação do index composto `CREATE INDEX L_SHIPMODE_RECEIPTDATE_Index ON lineitem (l_shipmode,l_receiptdate)` no MySQL.
+
+Utilizando o mesmo método no PostgreSQL também obtivemos uma melhora de desempenho significativa durante a consulta.
+
+![1](https://media.discordapp.net/attachments/744351225381781594/1009841375681982594/unknown.png)
+
+### Média do tempo da consulta otimizada
+
+PostgreSQL: 0.264 - 0.262 - 0.270 - 0.268 - 0.260 = Média: 0.265 sec
+
+MySQL: 0.203 - 0.141 - 0.180 - 0.109 - 0.162 = Média: 0.159 sec
 
 ## 2ª Query
 
