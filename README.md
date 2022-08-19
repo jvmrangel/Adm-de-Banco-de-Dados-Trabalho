@@ -2,6 +2,11 @@
 # Consultas:
 
 ## 1ª Query (TPC-H Q12)
+This query determines whether selecting less expensive modes of shipping is negatively affecting the critical-priority orders by causing more parts to be received by customers after the committed date.
+Essa query determina se optar por formas mais baratas de transporte está afetando negativamente os pedidos de prioridade urgente, pelo atraso no prazo de entrega das partes.
+
+
+
 
 ```sql
  
@@ -49,6 +54,7 @@ PostgreSQL: 0.264 - 0.262 - 0.270 - 0.268 - 0.260 = Média: 0.265 sec
 MySQL: 0.203 - 0.141 - 0.180 - 0.109 - 0.162 = Média: 0.159 sec
 
 ## 2ª Query (TPC-H Q3)
+Essa query retorna os 10 pedidos mais caros que ainda não foram enviados.
 
 ```sql
 SELECT l_orderkey,
@@ -91,6 +97,10 @@ PostgreSQL: 0.235 - 0.242 - 0.243 - 0.238 - 0.252 = Média: 0.242 sec
 MySQL: 0.204 - 0.187 - 0.190 - 0.195 - 0.182 = Média: 0.191 sec
 
 ## 3ª Query (TPC-H Q19)
+The Discounted Revenue Query reports the gross discounted revenue attributed to the sale of selected parts handled
+in a particular manner. This query is an example of code such as might be produced programmatically by a data
+mining tool.
+
 
 ```sql
 SELECT Sum(l_extendedprice * ( 1 - l_discount )) AS revenue
@@ -143,6 +153,7 @@ PostgreSQL: 0.142 - 0.148 - 0.152 - 0.144 - 0.142 = Média: 146 sec
 MySQL: 0.062 - 0.080 - 0.068 - 0.076 - 0.072 = Média: 0.071 sec
 
 ## 4ª Query (TPC-H Q8)
+Essa query determina como a participação no mercado de uma nação em uma região mudou nos últimos dois anos, com relação a uma parte específica.
 
 ```sql
 SELECT o_year,
@@ -195,6 +206,7 @@ PostgreSQL: (Otimização não aplicada)
 MySQL: 0.235 - 0.250 - 0.262 - 0.243 - 0.252 = Média: 0.248 sec
 
 ## 5ª Query (TPC-H Q10)
+Essa query identifica clientes que podem estar tendo problema com partes que foram enviadas a eles.
 
 ```sql
 SELECT c_custkey,
