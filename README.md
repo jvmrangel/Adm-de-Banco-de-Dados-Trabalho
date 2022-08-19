@@ -2,7 +2,7 @@
 # Consultas:
 
 ## 1ª Query (TPC-H Q12)
-This query determines whether selecting less expensive modes of shipping is negatively affecting the critical-priority orders by causing more parts to be received by customers after the committed date.
+
 Essa query determina se optar por formas mais baratas de transporte está afetando negativamente os pedidos de prioridade urgente, pelo atraso no prazo de entrega das partes.
 
 
