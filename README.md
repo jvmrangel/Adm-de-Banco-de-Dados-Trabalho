@@ -151,7 +151,7 @@ O mesmo método funcionou no PostgreSQL, porém não obteve uma melhora tão sig
 
 ### Média do tempo da consulta otimizada
 
-PostgreSQL: 0.142 - 0.148 - 0.152 - 0.144 - 0.142 = Média: 146 sec
+PostgreSQL: 0.142 - 0.148 - 0.152 - 0.144 - 0.142 = Média: 0.146 sec
 
 MySQL: 0.062 - 0.080 - 0.068 - 0.076 - 0.072 = Média: 0.071 sec
 
