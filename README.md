@@ -97,9 +97,7 @@ PostgreSQL: 0.235 - 0.242 - 0.243 - 0.238 - 0.252 = Média: 0.242 sec
 MySQL: 0.204 - 0.187 - 0.190 - 0.195 - 0.182 = Média: 0.191 sec
 
 ## 3ª Query (TPC-H Q19)
-The Discounted Revenue Query reports the gross discounted revenue attributed to the sale of selected parts handled
-in a particular manner. This query is an example of code such as might be produced programmatically by a data
-mining tool.
+Essa query retorna a receita descontada total atribuida a venda das partes selecionadas que são gerenciadas de uma maneira específica.
 
 
 ```sql
