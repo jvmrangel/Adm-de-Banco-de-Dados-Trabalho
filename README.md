@@ -1,3 +1,8 @@
+# Grupo 6:
+
+João Victor Machado Rangel
+
+Luiz Felipi Caiado Junionello
 
 # Consultas:
 
